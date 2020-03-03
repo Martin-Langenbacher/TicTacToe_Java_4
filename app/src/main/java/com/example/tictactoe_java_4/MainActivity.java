@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // idHeadline ist der Head-Line-String !
         statusText = findViewById(R.id.idHeadline);
 
         f11 = findViewById(R.id.f0);
@@ -70,40 +71,67 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (gameState == "playing"){
             switch (v.getId()){
                 case R.id.f0:
-                    f11.setText(currentPlayer);
-                    handleInput(1, 1);
+                   //statusText.setText("Feld 1 ausgeben: ==>" +f11.getText() + v.textv.getChildtable.getChildAt(i);..toString() + "<== Ende Feld 1");
+                    if(f11.getText() == ""){
+                        f11.setText(currentPlayer);
+                        handleInput(1, 1);
+                    }
                     break;
+                    
                 case R.id.f1:
-                    f12.setText(currentPlayer);
-                    handleInput(1, 2);
+                    if(f12.getText() == ""){
+                        f12.setText(currentPlayer);
+                        handleInput(1, 2);
+                    }
                     break;
+
                 case R.id.f2:
-                    f13.setText(currentPlayer);
-                    handleInput(1, 3);
+                    if(f13.getText() == ""){
+                        f13.setText(currentPlayer);
+                        handleInput(1, 3);
+                    }
                     break;
+
                 case R.id.f3:
-                    f21.setText(currentPlayer);
-                    handleInput(2, 1);
+                    if(f21.getText() == ""){
+                        f21.setText(currentPlayer);
+                        handleInput(2, 1);
+                    }
                     break;
+
                 case R.id.f4:
-                    f22.setText(currentPlayer);
-                    handleInput(2, 2);
+                    if(f22.getText() == ""){
+                        f22.setText(currentPlayer);
+                        handleInput(2, 2);
+                    }
                     break;
+
                 case R.id.f5:
-                    f23.setText(currentPlayer);
-                    handleInput(2, 3);
+                    if(f23.getText() == ""){
+                        f23.setText(currentPlayer);
+                        handleInput(2, 3);
+                    }
                     break;
+
                 case R.id.f6:
-                    f31.setText(currentPlayer);
-                    handleInput(3, 1);
+                    if(f31.getText() == ""){
+                        f31.setText(currentPlayer);
+                        handleInput(3, 1);
+                    }
                     break;
+
                 case R.id.f7:
-                    f32.setText(currentPlayer);
-                    handleInput(3, 2);
+                    if(f32.getText() == ""){
+                        f32.setText(currentPlayer);
+                        handleInput(3, 2);
+                    }
                     break;
+
                 case R.id.f8:
-                    f33.setText(currentPlayer);
-                    handleInput(3, 3);
+                    if(f33.getText() == ""){
+                        f33.setText(currentPlayer);
+                        handleInput(3, 3);
+                    }
                     break;
             }
         }
@@ -129,7 +157,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             } else {
                 currentPlayer = "X";
             }
-            statusText.setText("Spieler " +currentPlayer + " ist an der Reihe");
+            //statusText.setText("Spieler " +currentPlayer + " ist am Zug.");
         }
     }
 
