@@ -1,0 +1,178 @@
+package com.example.tictactoe_java_4;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Handler;
+import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
+
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+
+    TextView f11, f12, f13, f21, f22, f23, f31, f32, f33;
+    String currentPlayer = "X";
+    int[][] gameStorage;
+    private TextView statusText;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        statusText = findViewById(R.id.idHeadline);
+
+        f11 = findViewById(R.id.f0);
+        f12 = findViewById(R.id.f1);
+        f13 = findViewById(R.id.f2);
+        f21 = findViewById(R.id.f3);
+        f22 = findViewById(R.id.f4);
+        f23 = findViewById(R.id.f5);
+        f31 = findViewById(R.id.f6);
+        f32 = findViewById(R.id.f7);
+        f33 = findViewById(R.id.f8);
+
+        f11.setOnClickListener(this);
+        f12.setOnClickListener(this);
+        f13.setOnClickListener(this);
+        f21.setOnClickListener(this);
+        f22.setOnClickListener(this);
+        f23.setOnClickListener(this);
+        f31.setOnClickListener(this);
+        f32.setOnClickListener(this);
+        f33.setOnClickListener(this);
+
+        gameStorage = new int[3][3];
+
+    }
+
+    @SuppressLint("ResourceType")
+    @Override
+    public void onClick(View v) {
+        //Wie kann ich herausfinden, ob ein Feld leer ist - oder was darin steht?
+        //statusText.setText(currentPlayer + " und f33.getText... " + f33.getText());
+        //statusText.setText("Spieler " +currentPlayer + " ist an der Reihe");
+
+        switch (v.getId()){
+            case R.id.f0:
+                f11.setText(currentPlayer);
+                handleInput(1, 1);
+                break;
+            case R.id.f1:
+                f12.setText(currentPlayer);
+                handleInput(1, 2);
+                break;
+            case R.id.f2:
+                f13.setText(currentPlayer);
+                handleInput(1, 3);
+                break;
+            case R.id.f3:
+                f21.setText(currentPlayer);
+                handleInput(2, 1);
+                break;
+            case R.id.f4:
+                f22.setText(currentPlayer);
+                handleInput(2, 2);
+                break;
+            case R.id.f5:
+                f23.setText(currentPlayer);
+                handleInput(2, 3);
+                break;
+            case R.id.f6:
+                f31.setText(currentPlayer);
+                handleInput(3, 1);
+                break;
+            case R.id.f7:
+                f32.setText(currentPlayer);
+                handleInput(3, 2);
+                break;
+            case R.id.f8:
+                f33.setText(currentPlayer);
+                handleInput(3, 3);
+                break;
+        }
+        //statusText.setText("Spieler " +currentPlayer + " ist an der Reihe");
+    }
+
+
+    private void handleInput(int x, int y) {
+        if (gameStorage[x-1][y-1] == 0){
+            if (currentPlayer.equals("X")){
+                gameStorage[x-1][y-1] = 1;
+                currentPlayer = "O";
+            } else {
+                gameStorage[x-1][y-1] = -1;
+                currentPlayer = "X";
+            }
+        }
+        if (checkGameEnd()){
+            statusText.setText("Spieler " +currentPlayer + " hat gewonnen");
+
+
+            // Slow down: 5s! ========================================================!!!!!
+
+            /*
+
+            for(int i=1; i < 1000000; i++){
+                int a = i * 2;
+            }
+
+
+             */
+
+
+
+
+
+            finishGame();
+        } else {
+            statusText.setText("Spieler " +currentPlayer + " ist an der Reihe");
+        }
+    }
+
+
+
+    private boolean checkGameEnd() {
+        return    (Math.abs(gameStorage[0][0] + gameStorage[0][1] +gameStorage[0][2]) == 3
+                || Math.abs(gameStorage[1][0] + gameStorage[1][1] +gameStorage[1][2]) == 3
+                || Math.abs(gameStorage[2][0] + gameStorage[2][1] +gameStorage[2][2]) == 3
+                || Math.abs(gameStorage[0][0] + gameStorage[1][0] +gameStorage[2][0]) == 3
+                || Math.abs(gameStorage[0][1] + gameStorage[1][1] +gameStorage[2][1]) == 3
+                || Math.abs(gameStorage[0][2] + gameStorage[1][2] +gameStorage[2][2]) == 3
+                || Math.abs(gameStorage[0][0] + gameStorage[1][1] +gameStorage[2][2]) == 3
+                || Math.abs(gameStorage[0][2] + gameStorage[1][1] +gameStorage[2][0]) == 3);
+    }
+
+
+    private void finishGame() {
+        if (currentPlayer.equals("X")){
+            Toast.makeText(getApplicationContext(), "O gewinnt", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(getApplicationContext(), "X gewinnt", Toast.LENGTH_LONG).show();
+        }
+        // Neuer Start... (man könnte aber auch die Variablen zurücksetzen...)
+        Intent intent = new Intent (this, MainActivity.class);
+        startActivity(intent);
+        this.finish();
+    }
+
+
+}
+
+/*
+--> Wie baue ich das ein ????
+
+import android.os.Handler;
+...
+final Handler handler = new Handler();
+handler.postDelayed(new Runnable() {
+    @Override
+    public void run() {
+        // Do something after 5s = 5000ms
+        buttons[inew][jnew].setBackgroundColor(Color.BLACK);
+    }
+}, 5000);
+
+ */
