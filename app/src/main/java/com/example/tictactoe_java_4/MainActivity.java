@@ -16,6 +16,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     String currentPlayer = "X";
     int[][] gameStorage;
     private TextView statusText;
+    String gameState = "playing";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,49 +52,61 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @SuppressLint("ResourceType")
     @Override
     public void onClick(View v) {
+        // Start bei Click...
+        if (gameState == "won"){
+            finishGame();
+        }
+
+
+
+
+
+
         //Wie kann ich herausfinden, ob ein Feld leer ist - oder was darin steht?
         //statusText.setText(currentPlayer + " und f33.getText... " + f33.getText());
         //statusText.setText("Spieler " +currentPlayer + " ist an der Reihe");
 
-        switch (v.getId()){
-            case R.id.f0:
-                f11.setText(currentPlayer);
-                handleInput(1, 1);
-                break;
-            case R.id.f1:
-                f12.setText(currentPlayer);
-                handleInput(1, 2);
-                break;
-            case R.id.f2:
-                f13.setText(currentPlayer);
-                handleInput(1, 3);
-                break;
-            case R.id.f3:
-                f21.setText(currentPlayer);
-                handleInput(2, 1);
-                break;
-            case R.id.f4:
-                f22.setText(currentPlayer);
-                handleInput(2, 2);
-                break;
-            case R.id.f5:
-                f23.setText(currentPlayer);
-                handleInput(2, 3);
-                break;
-            case R.id.f6:
-                f31.setText(currentPlayer);
-                handleInput(3, 1);
-                break;
-            case R.id.f7:
-                f32.setText(currentPlayer);
-                handleInput(3, 2);
-                break;
-            case R.id.f8:
-                f33.setText(currentPlayer);
-                handleInput(3, 3);
-                break;
+        // wir tun nur etwas, wenn 1) das Feld leer ist UND das Spiel auf "playing" steht!
+        if (gameState == "playing"){
+            switch (v.getId()){
+                case R.id.f0:
+                    f11.setText(currentPlayer);
+                    handleInput(1, 1);
+                    break;
+                case R.id.f1:
+                    f12.setText(currentPlayer);
+                    handleInput(1, 2);
+                    break;
+                case R.id.f2:
+                    f13.setText(currentPlayer);
+                    handleInput(1, 3);
+                    break;
+                case R.id.f3:
+                    f21.setText(currentPlayer);
+                    handleInput(2, 1);
+                    break;
+                case R.id.f4:
+                    f22.setText(currentPlayer);
+                    handleInput(2, 2);
+                    break;
+                case R.id.f5:
+                    f23.setText(currentPlayer);
+                    handleInput(2, 3);
+                    break;
+                case R.id.f6:
+                    f31.setText(currentPlayer);
+                    handleInput(3, 1);
+                    break;
+                case R.id.f7:
+                    f32.setText(currentPlayer);
+                    handleInput(3, 2);
+                    break;
+                case R.id.f8:
+                    f33.setText(currentPlayer);
+                    handleInput(3, 3);
+                    break;
+            }
         }
-        //statusText.setText("Spieler " +currentPlayer + " ist an der Reihe");
     }
 
 
@@ -101,33 +114,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (gameStorage[x-1][y-1] == 0){
             if (currentPlayer.equals("X")){
                 gameStorage[x-1][y-1] = 1;
-                currentPlayer = "O";
+                //currentPlayer = "O";
             } else {
                 gameStorage[x-1][y-1] = -1;
-                currentPlayer = "X";
+                //currentPlayer = "X";
             }
         }
         if (checkGameEnd()){
             statusText.setText("Spieler " +currentPlayer + " hat gewonnen");
-
-
-            // Slow down: 5s! ========================================================!!!!!
-
-            /*
-
-            for(int i=1; i < 1000000; i++){
-                int a = i * 2;
-            }
-
-
-             */
-
-
-
-
-
-            finishGame();
+            gameState = "won";
         } else {
+            if(currentPlayer == "X"){
+                currentPlayer = "O";
+            } else {
+                currentPlayer = "X";
+            }
             statusText.setText("Spieler " +currentPlayer + " ist an der Reihe");
         }
     }
@@ -147,10 +148,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     private void finishGame() {
-        if (currentPlayer.equals("X")){
-            Toast.makeText(getApplicationContext(), "O gewinnt", Toast.LENGTH_LONG).show();
+        if (currentPlayer.equals("O")){
+            Toast.makeText(getApplicationContext(), "O hat gewonnen!", Toast.LENGTH_LONG).show();
         } else {
-            Toast.makeText(getApplicationContext(), "X gewinnt", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "X hat gewonnen!", Toast.LENGTH_LONG).show();
         }
         // Neuer Start... (man könnte aber auch die Variablen zurücksetzen...)
         Intent intent = new Intent (this, MainActivity.class);
@@ -160,6 +161,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
 }
+
+
+
+// Slow down: 5s! ========================================================!!!!!
+
+
 
 /*
 --> Wie baue ich das ein ????
