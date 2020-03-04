@@ -47,99 +47,82 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         f33.setOnClickListener(this);
 
         gameStorage = new int[3][3];
-
     }
+
 
     @SuppressLint("ResourceType")
     @Override
     public void onClick(View v) {
         // Start bei Click...
-        if (gameState == "won"){
+        if (gameState != "playing"){
             finishGame();
         }
-
-
-
-
-
-
         //Wie kann ich herausfinden, ob ein Feld leer ist - oder was darin steht?
-        //statusText.setText(currentPlayer + " und f33.getText... " + f33.getText());
-        //statusText.setText("Spieler " +currentPlayer + " ist an der Reihe");
+        // == >> ((TextView) v).getText()
+        //
+        // Ausgabe: "Was steht im Feld?
+        // statusText.setText("==>" +((TextView) v).getText() + "<==");
+        // statusText.setText("==>" + "".equals(((TextView) v).getText()) + "<==");
 
+
+        if (gameState.equals("playing") && "".equals(((TextView) v).getText())){
         // wir tun nur etwas, wenn 1) das Feld leer ist UND das Spiel auf "playing" steht!
-        if (gameState == "playing"){
-            switch (v.getId()){
-                case R.id.f0:
-                   //statusText.setText("Feld 1 ausgeben: ==>" +f11.getText() + v.textv.getChildtable.getChildAt(i);..toString() + "<== Ende Feld 1");
-                    if(f11.getText() == ""){
+                switch (v.getId()){
+                    case R.id.f0:
                         f11.setText(currentPlayer);
                         handleInput(1, 1);
-                    }
-                    break;
-                    
-                case R.id.f1:
-                    if(f12.getText() == ""){
+                        break;
+
+                    case R.id.f1:
                         f12.setText(currentPlayer);
                         handleInput(1, 2);
-                    }
-                    break;
+                        /* old code...
+                        if(f12.getText() == ""){
+                        }
+                         */
+                        break;
 
-                case R.id.f2:
-                    if(f13.getText() == ""){
+                    case R.id.f2:
                         f13.setText(currentPlayer);
                         handleInput(1, 3);
-                    }
-                    break;
+                        break;
 
-                case R.id.f3:
-                    if(f21.getText() == ""){
+                    case R.id.f3:
                         f21.setText(currentPlayer);
                         handleInput(2, 1);
-                    }
-                    break;
+                        break;
 
-                case R.id.f4:
-                    if(f22.getText() == ""){
+                    case R.id.f4:
                         f22.setText(currentPlayer);
                         handleInput(2, 2);
-                    }
-                    break;
+                        break;
 
-                case R.id.f5:
-                    if(f23.getText() == ""){
+                    case R.id.f5:
                         f23.setText(currentPlayer);
                         handleInput(2, 3);
-                    }
-                    break;
+                        break;
 
-                case R.id.f6:
-                    if(f31.getText() == ""){
+                    case R.id.f6:
                         f31.setText(currentPlayer);
                         handleInput(3, 1);
-                    }
-                    break;
+                        break;
 
-                case R.id.f7:
-                    if(f32.getText() == ""){
+                    case R.id.f7:
                         f32.setText(currentPlayer);
                         handleInput(3, 2);
-                    }
-                    break;
+                        break;
 
-                case R.id.f8:
-                    if(f33.getText() == ""){
+                    case R.id.f8:
                         f33.setText(currentPlayer);
                         handleInput(3, 3);
-                    }
-                    break;
+                        break;
+                }
             }
-        }
     }
 
 
     private void handleInput(int x, int y) {
-        if (gameStorage[x-1][y-1] == 0){
+        if (gameStorage[x-1][y-1] == 0 && (!checkFieldfull())){
             if (currentPlayer.equals("X")){
                 gameStorage[x-1][y-1] = 1;
                 //currentPlayer = "O";
@@ -147,20 +130,36 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 gameStorage[x-1][y-1] = -1;
                 //currentPlayer = "X";
             }
+        } else {
+            statusText.setText("Unentschieden!");
+            gameState = "tie";
+
         }
+
         if (checkGameEnd()){
             statusText.setText("Spieler " +currentPlayer + " hat gewonnen");
             gameState = "won";
+        } else if (checkFieldfull()) {
+            statusText.setText("Unentschieden!");
+            gameState = "tie";
         } else {
             if(currentPlayer == "X"){
                 currentPlayer = "O";
             } else {
                 currentPlayer = "X";
             }
-            //statusText.setText("Spieler " +currentPlayer + " ist am Zug.");
+            statusText.setText("Spieler " +currentPlayer + " ist am Zug.");
         }
     }
 
+
+    private boolean checkFieldfull() {
+        return    (Math.abs(gameStorage[0][0]) + Math.abs(gameStorage[0][1]) +
+                   Math.abs(gameStorage[0][2]) + Math.abs(gameStorage[1][0]) +
+                   Math.abs(gameStorage[1][1]) + Math.abs(gameStorage[1][2]) +
+                   Math.abs(gameStorage[2][0]) + Math.abs(gameStorage[2][1]) +
+                   Math.abs(gameStorage[2][2]) == 9);
+    }
 
 
     private boolean checkGameEnd() {
@@ -177,16 +176,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void finishGame() {
         if (currentPlayer.equals("O")){
-            Toast.makeText(getApplicationContext(), "O hat gewonnen!", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "O hat gewonnen: Neues Spiel?", Toast.LENGTH_LONG).show();
+        } else if (gameState.equals("won")) {
+            Toast.makeText(getApplicationContext(), "X hat gewonnen! Neues Spiel?", Toast.LENGTH_LONG).show();
         } else {
-            Toast.makeText(getApplicationContext(), "X hat gewonnen!", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Unentschieden! Neues Spiel?", Toast.LENGTH_LONG).show();
         }
         // Neuer Start... (man könnte aber auch die Variablen zurücksetzen...)
         Intent intent = new Intent (this, MainActivity.class);
         startActivity(intent);
         this.finish();
     }
-
 
 }
 
