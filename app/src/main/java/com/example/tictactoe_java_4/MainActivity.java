@@ -182,32 +182,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } else {
             Toast.makeText(getApplicationContext(), "Unentschieden! Neues Spiel?", Toast.LENGTH_LONG).show();
         }
-        // Neuer Start... (man könnte aber auch die Variablen zurücksetzen...)
-        Intent intent = new Intent (this, MainActivity.class);
-        startActivity(intent);
-        this.finish();
-    }
 
+
+        // slow down...
+        // mit anonymer Klasse...
+        final Handler handler = new Handler();
+
+        final MainActivity mainActivity = this;
+
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Do something after 5s = 5000ms
+                Intent intent = new Intent (mainActivity, MainActivity.class);
+                startActivity(intent);
+                mainActivity.finish();
+
+            }
+        }, 3000);
+    }
 }
 
 
 
-// Slow down: 5s! ========================================================!!!!!
-
-
-
-/*
---> Wie baue ich das ein ????
-
-import android.os.Handler;
-...
-final Handler handler = new Handler();
-handler.postDelayed(new Runnable() {
-    @Override
-    public void run() {
-        // Do something after 5s = 5000ms
-        buttons[inew][jnew].setBackgroundColor(Color.BLACK);
-    }
-}, 5000);
-
- */
